@@ -138,3 +138,21 @@ def trainNetwork(s,readout,h_fc1,sess):
     D.append((s_t,a_t,r_t,s_t1,terminal))
     if len(D) > REPLAY_MEMORY:
         D.popleft()
+        
+    if t>OBSERVER:
+        #从D中随机采样，用于参数更新
+        minibatch = random.sample(D,BATCH)
+        
+        #分别将当前状态，采取的动作，获得的回报，下一状态分组存放
+        s_j_batch = [d[0] for d  in minibatch]
+        a_batch = [d[1] for d  in minibatch]
+        r_batch = [d[2] for d  in minibatch]
+        s_j1_batch = [d[3] for d  in minibatch]
+        
+        #计算Q(s,a)的新值
+        y_batch = []
+        readout_j1_batch = readout.eval(feed_dict={s:s_j1_batch})
+        for i in range(0,len(minibatch)):
+
+            
+        
